@@ -21,6 +21,14 @@ syncdb:
 	bin/django migrate --fake
 	bin/django loaddata initial_data.json
 
+# circo dot fdp neato nop nop1 nop2 twopi
+graph:
+	bin/django graph_models \
+	    --group-models \
+	    --all-applications \
+	    -o graph.png
+	xdg-open graph.png
+
 clean:
 	hg purge --all
 

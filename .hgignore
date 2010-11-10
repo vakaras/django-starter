@@ -9,9 +9,10 @@ bin
 bootstrap.py
 dev.db
 develop-eggs
+development.db
 docs/build
+graph.png
 logs
 parts
-development.db
 project/production.py
 tags

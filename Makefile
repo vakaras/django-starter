@@ -38,7 +38,7 @@ bootstrap.py:
 bin/buildout:
 	python bootstrap.py
 
-bin/django: bin/buildout buildout.cfg
+bin/django: bin/buildout buildout.cfg apps/*/setup.py
 	bin/buildout -N
 	touch $@
 

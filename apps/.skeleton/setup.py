@@ -1,11 +1,11 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(
     name='$(name)',
     version='0.1',
     author='$(author)',
     author_email='$(author)@localhost',
-    packages=['$(name)',],
+    packages=find_packages(),
     url='http://pypi.python.org/pypi/$(name)/',
     license='Commercial',
     description='$(name).',

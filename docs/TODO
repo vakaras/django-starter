@@ -1,0 +1,9 @@
+TODO:ski:Put database file in data directory.
+TODO:ski:Move fixtures file to data/fixtures or similar directory.
+TODO:ski:omelette and ctags doesn't really fits into buildout file because not
+everytone might want it. Maybe create a separate buildout file for developer
+which extends buildout.cfg
+TODO:ski:provide bootstrap.py file. Windows users does not have `wget`.
+FIXME:ski:It is not clear that development.py is a settings file. Maybe
+developer_settings.py?
+XXX:ski:why project doesn't have it's own egg?

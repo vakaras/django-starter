@@ -14,17 +14,13 @@ CACHE_PREFIX = "Z"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_PATH, '..', 'development.db'),
+        'NAME': os.path.join(BUILDOUT_DIR, 'var', 'development.db'),
     }
 }
 
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
 }
-
-MIDDLEWARE_CLASSES = (
-    'annoying.middlewares.StaticServe',
-) + MIDDLEWARE_CLASSES
 
 MIDDLEWARE_CLASSES += (
     'debug_toolbar.middleware.DebugToolbarMiddleware',

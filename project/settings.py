@@ -22,12 +22,16 @@ SITE_ID = 1
 USE_I18N = True
 USE_L10N = True
 
-PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+PROJECT_DIR = os.path.realpath(os.path.dirname(__file__))
+BUILDOUT_DIR = os.path.abspath(os.path.join(PROJECT_DIR, '..'))
 
-MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+STATIC_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'htdocs', 'static')
+STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'htdocs', 'media')
 MEDIA_URL = '/media/'
 
-ADMIN_MEDIA_PREFIX = '/media/admin/'
+ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 SECRET_KEY = '8m86q=ycpwma&n1f0t-l)y(i&lx*aon=%!(uuv985a-t+a_bfw'
 
@@ -58,6 +62,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
+    'staticfiles.context_processors.static_url',
 )
 
 INSTALLED_APPS = (
@@ -69,4 +74,5 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'south',
+    'staticfiles',
 )

@@ -7,12 +7,10 @@ syntax:glob
 .twill-history
 bin
 bootstrap.py
-dev.db
 develop-eggs
-development.db
 docs/build
-graph.png
-logs
+etc/apache.conf
 parts
 project/production.py
 tags
+var

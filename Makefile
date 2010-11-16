@@ -5,7 +5,8 @@ all: bootstrap.py \
      bin/django \
      project/production.py \
      development.db \
-     docs/build/html
+     docs/build/html \
+     project/static
 
 run:
 	bin/django runserver
@@ -26,8 +27,8 @@ graph:
 	bin/django graph_models \
 	    --group-models \
 	    --all-applications \
-	    -o graph.png
-	xdg-open graph.png
+	    -o var/graph.png
+	xdg-open var/graph.png
 
 clean:
 	hg purge --all
@@ -38,7 +39,7 @@ bootstrap.py:
 bin/buildout:
 	python bootstrap.py
 
-bin/django: bin/buildout buildout.cfg apps/*/setup.py
+bin/django: bin/buildout buildout.cfg
 	bin/buildout -N
 	touch $@
 
@@ -49,6 +50,9 @@ development.db:
 	bin/django syncdb --all --noinput
 	bin/django migrate --fake
 	bin/django loaddata initial_data.json
+
+project/static:
+	bin/django build_static --noinput
 
 docs/build/html: $(find docs -type f -not -wholename 'docs/build/*')
 	cd docs ; make html

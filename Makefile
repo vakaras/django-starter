@@ -4,9 +4,9 @@ all: bootstrap.py \
      bin/buildout \
      bin/django \
      project/production.py \
-     development.db \
+     var/development.db \
      docs/build/html \
-     project/static
+     var/htdocs/static
 
 run:
 	bin/django runserver
@@ -46,12 +46,12 @@ bin/django: bin/buildout buildout.cfg
 project/production.py:
 	cp project/development.py project/production.py
 
-development.db:
+var/development.db:
 	bin/django syncdb --all --noinput
 	bin/django migrate --fake
 	bin/django loaddata initial_data.json
 
-project/static:
+var/htdocs/static:
 	bin/django build_static --noinput
 
 docs/build/html: $(find docs -type f -not -wholename 'docs/build/*')

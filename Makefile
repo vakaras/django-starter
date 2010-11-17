@@ -34,6 +34,7 @@ clean:
 	hg purge --all
 
 bootstrap.py:
+	mkdir -p eggs downloads
 	wget http://www.python-distribute.org/bootstrap.py
 
 bin/buildout:

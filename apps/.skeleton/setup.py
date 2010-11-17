@@ -5,7 +5,6 @@ setup(name='$(name)',
       author='$(author)',
       author_email='$(author)@localhost',
       packages=find_packages(),
-      namespace_packages=[$(namespace)],
       install_requires=[
           'distribute',
       ],

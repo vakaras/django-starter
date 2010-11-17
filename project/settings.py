@@ -27,6 +27,10 @@ BUILDOUT_DIR = os.path.abspath(os.path.join(PROJECT_DIR, '..'))
 
 STATIC_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'htdocs', 'static')
 STATIC_URL = '/static/'
+STATICFILES_MEDIA_DIRNAMES = (
+    'media',
+    'static',
+)
 
 MEDIA_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'htdocs', 'media')
 MEDIA_URL = '/media/'
@@ -54,6 +58,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'project.urls'
 
 TEMPLATE_DIRS = (
+    os.path.join(PROJECT_DIR, 'templates'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -76,3 +81,4 @@ INSTALLED_APPS = (
     'south',
     'staticfiles',
 )
+

@@ -62,30 +62,18 @@ app:
 	@if [ "" = "$(name)" ] ; then \
 	    echo "Usage: make $@ name=myappname" ; \
 	    echo "or" ; \
-	    echo "Usage: make $@ name=mynamespace.myappname" ; \
+	    echo "Usage: make $@ name=mynamespace-myappname" ; \
 	elif [ -e apps/$(name) ] ; then \
 	    echo "App '$(name)' already exists." ; \
 	else \
 	    cp --preserve=mode -r apps/.skeleton apps/$(name) ; \
-	    lastname=$$(echo $(name) | egrep -o '[^.]+$$') ; \
-	    if [ "$$lastname" = "$(name)" ] ; then \
-		namespace= ; \
-		path=$(name) ; \
-	    else \
-		namespace=$$(echo $(name) | sed 's/\./\//g') ; \
-		namespace=$$(dirname $$namespace) ; \
-		path=$(name)/$$namespace ; \
-		mkdir apps/$$path ; \
-		echo "__import__('pkg_resources').declare_namespace(__name__)" \
-		    > apps/$$path/__init__.py ; \
-	    fi ; \
-	    bin/django startapp $$lastname ; \
-	    mv project/$$lastname apps/$$path/$$lastname ; \
+	    modulename=$$(echo $(name) | sed 's/-/_/g') ; \
+	    bin/django startapp $$modulename ; \
+	    mv project/$$modulename apps/$(name)/$$modulename ; \
 	    sed -i \
 	        -e 's/$$(name)/$(name)/g' \
 	        -e 's/$$(author)/'$$USER'/g' \
 	        -e 's/$$(date)/'$$(date +%Y-%m-%d)'/g' \
-	        -e 's/$$(namespace)/"'$$namespace'"/g' \
 	            apps/$(name)/CHANGES.txt \
 	            apps/$(name)/docs/conf.py \
 	            apps/$(name)/docs/index.rst \

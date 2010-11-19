@@ -9,19 +9,21 @@
         Allow from all
     </Directory>
 
-	WSGIScriptAlias / ${buildout:directory}/bin/production.wsgi
-	WSGIDaemonProcess djangoproject user=www-data group=www-data processes=1 threads=1
-	WSGIProcessGroup djangoproject
+    # TODO:ski: decide name for process user/group. Maybe set it to project
+    # name in buildout.cfg ?
+    WSGIScriptAlias / ${buildout:directory}/bin/production.wsgi
+    WSGIDaemonProcess djangoproject user=www-data group=www-data processes=1 threads=1
+    WSGIProcessGroup djangoproject
 
     <Location "/static">
         ExpiresActive On
         ExpiresDefault "access plus 1 hour"
-		SetHandler None
+        SetHandler None
     </Location>
 
     <Location "/media">
-		Sethandler None
-	</Location>
+        Sethandler None
+    </Location>
 
     LogLevel warn
     ErrorLog ${buildout:directory}/var/log/apache-error.log

@@ -18,6 +18,7 @@ test:
 	bin/django test
 
 syncdb:
+	rm var/development.db
 	bin/django syncdb --all --noinput
 	bin/django migrate --fake
 	bin/django loaddata initial_data.json

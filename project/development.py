@@ -7,6 +7,8 @@ INTERNAL_IPS = (
     '127.0.0.1',
 )
 
+TEST_RUNNER = 'django_coverage.coverage_runner.CoverageRunner'
+
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BUILDOUT_DIR, 'var', 'mail')
 
@@ -30,6 +32,6 @@ MIDDLEWARE_CLASSES += (
 )
 
 INSTALLED_APPS += (
-    'django_extensions',
     'debug_toolbar',
+    'django_extensions',
 )

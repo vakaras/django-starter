@@ -11,6 +11,6 @@ setup(name='$(name)',
       url='',
       license='GPL',
       description='$(name).',
-      long_description=open('README.txt').read(),
+      long_description=open('README.rst').read(),
       )
 

@@ -32,8 +32,8 @@ STATICFILES_MEDIA_DIRNAMES = (
     'static',
 )
 
-MEDIA_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'htdocs', 'media')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'htdocs', 'static')
+MEDIA_URL = '/static/'
 
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 

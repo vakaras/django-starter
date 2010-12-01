@@ -12,9 +12,7 @@ TEST_RUNNER = 'django_coverage.coverage_runner.CoverageRunner'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BUILDOUT_DIR, 'var', 'mail')
 
-CACHE_BACKEND = "locmem:///"
-CACHE_TIMEOUT = 60 * 5
-CACHE_PREFIX = "Z"
+CACHE_BACKEND = "dummy://"
 
 DATABASES = {
     'default': {

@@ -14,3 +14,5 @@ parts
 project/production.py
 tags
 var
+dist
+build

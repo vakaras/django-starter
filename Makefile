@@ -58,25 +58,3 @@ var/htdocs/static:
 
 docs/build/html: $(find docs -type f -not -wholename 'docs/build/*')
 	cd docs ; make html
-
-app:
-	@if [ "" = "$(name)" ] ; then \
-	    echo "Usage: make $@ name=myappname" ; \
-	    echo "or" ; \
-	    echo "Usage: make $@ name=mynamespace-myappname" ; \
-	elif [ -e apps/$(name) ] ; then \
-	    echo "App '$(name)' already exists." ; \
-	else \
-	    cp --preserve=mode -r apps/.skeleton apps/$(name) ; \
-	    modulename=$$(echo $(name) | sed 's/-/_/g') ; \
-	    bin/django startapp $$modulename ; \
-	    mv project/$$modulename apps/$(name)/$$modulename ; \
-	    sed -i \
-	        -e 's/$$(name)/$(name)/g' \
-	        -e 's/$$(author)/'$$USER'/g' \
-	        -e 's/$$(date)/'$$(date +%Y-%m-%d)'/g' \
-	            apps/$(name)/CHANGES.txt \
-	            apps/$(name)/docs/conf.py \
-	            apps/$(name)/docs/index.rst \
-	            apps/$(name)/setup.py ; \
-	fi

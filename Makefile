@@ -1,4 +1,4 @@
-.PHONY: all run tags test syncdb app clean
+.PHONY: all run tags test todo syncdb app clean
 
 all: bootstrap.py \
      bin/buildout \
@@ -14,11 +14,15 @@ run:
 tags:
 	bin/ctags -v
 
+todo:
+	@egrep -n 'FIXME|TODO' $$(find apps -iname '*.py' ; \
+	                          find project -iname '*.py')
+
 test:
 	bin/django test
 
 syncdb:
-	rm var/development.db
+	test ! -f var/development.db || rm var/development.db
 	bin/django syncdb --all --noinput
 	bin/django migrate --fake
 	bin/django loaddata initial_data.json

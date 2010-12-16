@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 if [ $# != 2  ]; then
     echo "Usage: registerapp.sh application-name index-server"

@@ -1,11 +1,20 @@
 #! /bin/sh
 
-if [ $# != 2  ]; then
-    echo "Usage: registerapp.sh application-name index-server"
-elif [ !-f apps/$1/setup.py ]; then
-    echo "Application '$1' does not exist."
+if [ $# != 1 ] ; then
+    echo "Usage: startapp.sh application-name"
+elif [ -e apps/$1 ] ; then
+    echo "App '$1' already exists."
 else
-    cd apps/$1
-    python setup.py register -r $2 sdist upload -r $2
-    cd ../..
+    modulename=$(echo $1 | sed 's/-/_/g')
+    bin/django startapp $modulename && \
+    cp --preserve=mode -r apps/.skeleton apps/$1 && \
+    mv project/$modulename apps/$1/$modulename && \
+    sed -i \
+        -e 's/$(name)/'$1'/g' \
+        -e 's/$(author)/'$USER'/g' \
+        -e 's/$(date)/'$(date +%Y-%m-%d)'/g' \
+            apps/$1/CHANGES.txt \
+            apps/$1/docs/conf.py \
+            apps/$1/docs/index.rst \
+            apps/$1/setup.py 
 fi

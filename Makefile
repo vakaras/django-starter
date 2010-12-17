@@ -29,7 +29,7 @@ todo:
 	                          find project -iname '*.py')
 
 test:
-	bin/django test avatars avatarplugin_email wora profiles
+	bin/django test
 
 flake8:
 	@bin/flake8 \

@@ -52,9 +52,6 @@ graph:
 	    -o var/graph.png
 	xdg-open var/graph.png
 
-clean:
-	hg purge --all
-
 bin/django: bin/buildout buildout.cfg, development.cfg apps/*/setup.py
 	bin/buildout -c development.cfg -N
 	touch $@

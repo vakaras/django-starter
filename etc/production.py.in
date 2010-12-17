@@ -1,0 +1,15 @@
+from project.settings import *  # NOQA
+
+ADMINS = (
+    ('SeverAdmin', '${buildout:serveradmin}'),
+)
+MANAGERS = ADMINS
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': '${buildout:directory}/etc/my.cnf',
+        },
+    }
+}

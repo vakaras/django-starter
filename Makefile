@@ -39,7 +39,8 @@ flake8:
 	    project/
 
 syncdb:
-	test ! -f var/development.db || rm var/development.db
+	test ! -f bin/django.wsgi
+	if [ -f var/development.db ] ; then rm var/development.db ; fi
 	bin/django syncdb --all --noinput
 	bin/django migrate --fake
 	bin/django loaddata initial_data.json
@@ -52,11 +53,13 @@ graph:
 	    -o var/graph.png
 	xdg-open var/graph.png
 
-bin/django: bin/buildout buildout.cfg, development.cfg apps/*/setup.py
+bin/django: bin/buildout buildout.cfg development.cfg
+	test ! -f bin/django.wsgi
 	bin/buildout -c development.cfg -N
 	touch $@
 
 var/development.db:
+	test ! -f bin/django.wsgi
 	bin/django syncdb --all --noinput
 	bin/django migrate --fake
 	bin/django loaddata initial_data.json
@@ -78,7 +81,8 @@ deploy: bootstrap.py \
 	var/production.db \
 	var/htdocs/static
 
-bin/django.wsgi: bin/buildout buildout.cfg apps/*/setup.py
+bin/django.wsgi: bin/buildout buildout.cfg etc/*.in
+	test ! -f var/development.db
 	bin/buildout -N
 	touch $@
 
@@ -108,6 +112,7 @@ project/production.py:
 	@exit 1
 
 var/production.db:
+	test ! -f var/development.db
 	bin/django syncdb --all --noinput
 	bin/django migrate --fake
 	bin/django loaddata initial_data.json

@@ -1,5 +1,9 @@
 # Default target
 
+TESTS = 
+COVERAGE_INCLUDES = --include=apps/*,project/*
+
+
 .PHONY: all
 
 all: develop
@@ -29,7 +33,13 @@ todo:
 	                          find project -iname '*.py')
 
 test:
-	bin/django test
+	bin/django test $(TESTS)
+
+coverage:
+	bin/coverage run $(COVERAGE_INCLUDES) bin/django test $(TESTS)
+	bin/coverage html -d var/htmlcov/ $(COVERAGE_INCLUDES)
+	bin/coverage report $(COVERAGE_INCLUDES)
+	@echo "Also try xdg-open var/htmlcov/index.html"
 
 flake8:
 	@bin/flake8 \
@@ -56,7 +66,7 @@ graph:
 bin/django: bin/buildout buildout.cfg development.cfg
 	test ! -f bin/django.wsgi
 	bin/buildout -c development.cfg -N
-	touch $@
+	touch -c $@
 
 var/development.db:
 	test ! -f bin/django.wsgi
@@ -66,6 +76,11 @@ var/development.db:
 
 docs/build/html: $(find docs -type f -not -wholename 'docs/build/*')
 	cd docs ; make html
+
+clean:
+
+realclean: clean
+	hg purge --all
 
 
 ##############
@@ -84,7 +99,7 @@ deploy: bootstrap.py \
 bin/django.wsgi: bin/buildout buildout.cfg etc/*.in
 	test ! -f var/development.db
 	bin/buildout -N
-	touch $@
+	touch -c $@
 
 project/production.py:
 	@echo
@@ -116,7 +131,7 @@ var/production.db:
 	bin/django syncdb --all --noinput
 	bin/django migrate --fake
 	bin/django loaddata initial_data.json
-	touch $@
+	touch -c $@
 
 
 ###########

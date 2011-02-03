@@ -43,9 +43,6 @@ coverage:
 
 flake8:
 	@bin/flake8 \
-	    apps/avatarplugin-email/avatarplugin_email/ \
-	    apps/avatars/avatars/ \
-	    apps/wora/wora/ \
 	    project/
 
 syncdb:

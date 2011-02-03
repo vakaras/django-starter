@@ -14,7 +14,11 @@ develop-eggs
 dist
 docs/build
 etc/apache.conf
+etc/production.py
+etc/my.cnf
 parts
 project/production.py
 tags
 var
+eggs
+downloads

@@ -137,7 +137,7 @@ var/production.db:
 
 bootstrap.py:
 	mkdir -p eggs downloads
-	wget http://www.python-distribute.org/bootstrap.py
+	wget http://svn.zope.org/*checkout*/zc.buildout/trunk/bootstrap/bootstrap.py
 
 bin/buildout:
 	python bootstrap.py

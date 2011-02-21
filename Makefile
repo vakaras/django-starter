@@ -140,7 +140,7 @@ bootstrap.py:
 	wget http://svn.zope.org/*checkout*/zc.buildout/trunk/bootstrap/bootstrap.py
 
 bin/buildout:
-	python bootstrap.py
+	python bootstrap.py -d
 
 var/htdocs/static:
 	bin/django build_static --noinput

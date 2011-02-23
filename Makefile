@@ -140,7 +140,11 @@ bootstrap.py:
 	wget http://svn.zope.org/*checkout*/zc.buildout/trunk/bootstrap/bootstrap.py
 
 bin/buildout:
-	python bootstrap.py -d
+	if which buildout > /dev/null ; then \
+	    $$(which buildout) init ; \
+	else \
+	    python bootstrap.py --distribute ; \
+	fi
 
 var/htdocs/static:
 	bin/django build_static --noinput

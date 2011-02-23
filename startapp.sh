@@ -13,10 +13,9 @@ else
    
 
     sed -i -e 's/$(date)/'$(date +%Y-%m-%d)'/g' apps/$1/CHANGES.txt
-    sed -i -e 's/$(author)/'$USER'/g'           apps/$1/docs/conf.py
-    sed -i -e 's/$(name)/'$1'/g'                apps/$1/docs/conf.py
+    sed -i -e 's/$(author)/'$USER'/g'           apps/$1/docs/conf.py apps/$1/setup.py
+    sed -i -e 's/$(name)/'$1'/g'                apps/$1/docs/conf.py apps/$1/setup.py
     sed -i -e 's/$(date)/'$(date +%Y-%m-%d)'/g' apps/$1/docs/index.rst
 
-   # python apps/$1/setup.py <-- this setup file is unfinished and do not work
 fi
 

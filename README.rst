@@ -1,15 +1,15 @@
 ``django-starter`` is prepared buildout environment for django project with
 reusable and installable django applications in mind.
 
-Using in development
-=======================================
+Using for development
+=====================
 
 To prepare development environment of your project use this command::
 
     make
 
-Using in production
-======================================
+Using for production
+====================
 
 To prepare production environment of your project use this command::
 
@@ -38,7 +38,7 @@ Features in development environment:
 * ``ctags`` - you can build tags file from all eggs added to buildout
   environment.
 
-* ``shpinx`` - ``django-starter`` has prepared ``docs`` folders for writing
+* ``sphinx`` - ``django-starter`` has prepared ``docs`` folders for writing
   documentations using ``sphinx``, ``sphinx`` is also included, so you can
   build documentations just running ``make html`` command in ``docs`` folder.
 
@@ -115,3 +115,48 @@ Commands from ``Makefile``:
 
 ``make clean``
     Cleans some generated files.
+
+How to add new app
+==================
+
+.. note::
+    Words in python package names are separated with hyphen, but words in
+    python module names are separated with spacing underscores.
+
+    Here is example of python package name::
+
+        my-app-name
+
+    Example of python module name::
+
+        my_app_name
+
+1. Run ``startapp.sh`` comand and provide python package name::
+
+   ./startapp.sh my-app-name
+
+2. Open ``buildout.cfg`` file.
+   
+3. Add ``apps/my-app-name`` line in ``[buildout]`` section, ``develop``
+   setting::
+
+    develop =
+        apps/my-app-name
+
+4. Add ``my-app-name`` line in ``[buildout]`` section, ``eggs`` setting::
+
+    eggs =
+        my-app-name
+
+5. Open ``project/settings.py`` file.
+
+6. Add ``'my_app_name',`` line in ``INSTALLED_APPS`` tuple.
+
+7. Run command::
+
+    make
+
+8. Check if your added app works::
+
+    bin/django shell
+    >>> import my_app_name

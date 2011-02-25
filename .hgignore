@@ -3,6 +3,8 @@ syntax:glob
 *.egg-info
 *.mo
 *.pyc
+.DS_Store
+.Thumbs.db
 .coverage
 .installed.cfg
 .mr.developer.cfg
@@ -13,12 +15,12 @@ build
 develop-eggs
 dist
 docs/build
+downloads
+eggs
 etc/apache.conf
-etc/production.py
 etc/my.cnf
+etc/production.py
 parts
 project/production.py
 tags
 var
-eggs
-downloads

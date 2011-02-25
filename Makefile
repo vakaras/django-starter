@@ -58,7 +58,7 @@ graph:
 	    --group-models \
 	    --all-applications \
 	    -o var/graph.png
-	xdg-open var/graph.png
+	if [[ `uname` == "Darwin" ]]; then open var/graph.png; else xdg-open var/graph.png; fi;
 
 bin/django: bin/buildout buildout.cfg development.cfg
 	test ! -f bin/django.wsgi

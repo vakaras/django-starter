@@ -1,5 +1,8 @@
 syntax:glob
 
+.DS_Store
+.Thumbs.db
+
 *.egg-info
 *.mo
 *.pyc

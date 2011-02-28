@@ -151,5 +151,4 @@ bin/buildout:
 	fi
 
 var/htdocs/static:
-	bin/django build_static --noinput
-
+	bin/django collectstatic --noinput

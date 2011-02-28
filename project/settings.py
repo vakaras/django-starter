@@ -27,9 +27,8 @@ BUILDOUT_DIR = os.path.abspath(os.path.join(PROJECT_DIR, '..'))
 
 STATIC_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'htdocs', 'static')
 STATIC_URL = '/static/'
-STATICFILES_MEDIA_DIRNAMES = (
-    'media',
-    'static',
+STATICFILES_DIRS = (
+    os.path.join(BUILDOUT_DIR, 'project', 'static'),
 )
 
 MEDIA_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'htdocs', 'static')
@@ -65,6 +64,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
+    'django.core.context_processors.static',
     'django.core.context_processors.request',
 )
 
@@ -75,6 +75,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
     'django.contrib.admin',
     'south',
 )

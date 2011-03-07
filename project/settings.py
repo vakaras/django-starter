@@ -25,15 +25,14 @@ USE_L10N = True
 PROJECT_DIR = os.path.realpath(os.path.dirname(__file__))
 BUILDOUT_DIR = os.path.abspath(os.path.join(PROJECT_DIR, '..'))
 
-STATIC_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'htdocs', 'static')
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'htdocs', 'static')
 STATICFILES_DIRS = (
     os.path.join(BUILDOUT_DIR, 'project', 'static'),
 )
 
-MEDIA_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'htdocs', 'static')
-MEDIA_URL = '/static/'
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'htdocs', 'media')
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 SECRET_KEY = '8m86q=ycpwma&n1f0t-l)y(i&lx*aon=%!(uuv985a-t+a_bfw'

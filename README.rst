@@ -52,7 +52,7 @@ Features in development environment:
   packages provides lots of useful django management commands.
 
 * ``pydev`` .pydevproject file generator for usage with PyDev development
-   environment
+  environment
 
 Features in production environment:
 

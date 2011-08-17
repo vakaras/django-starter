@@ -51,6 +51,9 @@ Features in development environment:
 * ``django-extensions`` and ``django-test-utils`` are also included, these
   packages provides lots of useful django management commands.
 
+* ``pydev`` .pydevproject file generator for usage with PyDev development
+  environment
+
 Features in production environment:
 
 * wsgi script out of the box

@@ -9,6 +9,9 @@ syntax:glob
 .installed.cfg
 .mr.developer.cfg
 .twill-history
+.pydevproject
+.project
+.pydevproject.bak
 bin
 bootstrap.py
 build

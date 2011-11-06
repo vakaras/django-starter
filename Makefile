@@ -29,10 +29,6 @@ clean:
 tags:
 	bin/ctags -v
 
-.PHONY: sass
-sass:
-	bin/sass --watch $(PROJECT)/sass:var/sass/css
-
 .PHONY: setup-ubuntu
 setup-ubuntu:
 	sudo apt-get install \

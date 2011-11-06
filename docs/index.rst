@@ -21,11 +21,18 @@ Features:
 All these features combined in to one consistent and working project
 environment, that is easily customizable.
 
+Home page:
+    https://bitbucket.org/sirex/django-starter
+
+Documentation:
+    http://django-starter.readthedocs.org/
+
 Quick start
 ===========
 
 Creating new django projects based on django-starter is easy::
 
+   sudo apt-get install mercurial
    hg clone https://bitbucket.org/sirex/django-starter my-new-project
    cd my-new-project
    ./clean.sh

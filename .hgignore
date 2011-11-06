@@ -18,6 +18,6 @@ env
 parts
 var
 
-syntax:regex
+syntax:regexp
 ^buildout.cfg$
 ^initial_data.json$

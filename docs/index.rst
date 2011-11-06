@@ -1,15 +1,44 @@
-Welcome to $(name)'s documentation!
-===================================
+django-starter documentation
+============================
 
-Contents:
+``django-starter`` is a django project template, that includes all best
+practices for configuring, developing, deploying and maintaining you project.
+
+Features:
+
+* Powerful build tools: waf, zc.buildout, make.
+
+* Powerful development tools: South, django-debug-toolbar, django-extensions,
+  django-test-utils, ipdb, ipython, ctags.
+
+* Mainstream web development libraries: jQuery, Modernizr, SASS with Compass
+  support, django-mediagenerator, solr-thumbnails.
+
+* Best known configuration for Apache, HTML and CSS using HTML5 Boilerplate.
+
+* Excellent documentation with documented best practices how to do things...
+
+All these features combined in to one consistent and working project
+environment, that is easily customizable.
+
+Quick start
+===========
+
+Creating new django projects based on django-starter is easy::
+
+   hg clone https://bitbucket.org/sirex/django-starter my-new-project
+   cd my-new-project
+   ./clean.sh
+   make setup-ubuntu
+   make run
+
+... thats all, now you can start to work on your new project without thinking
+about various project infrastructure related things.
+
+Contents
+========
 
 .. toctree::
    :maxdepth: 2
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+   usage

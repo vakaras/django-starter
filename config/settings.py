@@ -1,6 +1,7 @@
+#encoding: utf-8
 # coding: utf-8
 
-# DO NOT MODIFY! This file is generated from /home/sirex/devel/ubuntu-lt-django-lightweight/config/settings.py template.
+# $NOTE
 
 import os
 
@@ -25,20 +26,36 @@ os.environ['RUBYLIB'] = ':'.join([
 
 ugettext = lambda s: s
 
+#if $DEVELOPMENT
 DEBUG = True
+#else
+DEBUG = False
+#end if
 TEMPLATE_DEBUG = DEBUG
 MEDIA_DEV_MODE = DEBUG
 THUMBNAIL_DEBUG = DEBUG
 
 ADMINS = (
+    #if $PRODUCTION
+    ('Server Admin', '$SERVER_ADMIN'),
+    #end if
 )
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
+        #if $USE_SQLITE or $DEVELOPMENT
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BUILDOUT_DIR, 'var', 'development.db'),
+        #else
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'init_command': 'SET storage_engine=INNODB',
+            'read_default_file': os.path.join(BUILDOUT_DIR, 'var', 'etc',
+                                              'my.cnf'),
+        },
+        #end if
     }
 }
 
@@ -52,12 +69,14 @@ DATABASES = {
 TIME_ZONE = 'UTC'
 
 LANGUAGES = (
-    ('en', ugettext(u'English')),
+    #for $lang in $LANGUAGES
+    ('$lang', ugettext(u'$LANG_NAMES[$lang]')),
+    #end for
 )
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = '$LANGUAGE_CODE'
 
 LOCALE_PATHS = (
     os.path.join(PROJECT_DIR, 'locale'),
@@ -95,7 +114,9 @@ IMPORTED_SASS_FRAMEWORKS_DIR = os.path.join(BUILDOUT_DIR, 'var',
 GLOBAL_MEDIA_DIRS = (
     os.path.join(PROJECT_DIR, 'static'),
     os.path.join(BUILDOUT_DIR, 'parts', 'modernizr'),
+    #if $JQUERY_VERSION
     os.path.join(BUILDOUT_DIR, 'parts', 'jquery'),
+    #end if
     IMPORTED_SASS_FRAMEWORKS_DIR,
 )
 
@@ -133,7 +154,9 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    #if $DEVELOPMENT
     'mediagenerator.middleware.MediaMiddleware',
+    #end if
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -141,10 +164,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
+    #if $DEVELOPMENT
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #end if
 )
 
-ROOT_URLCONF = 'project.urls'
+ROOT_URLCONF = '${PROJECT_NAME}.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -159,7 +184,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
-    'project.context_processors.settings_for_context',
+    '${PROJECT_NAME}.context_processors.settings_for_context',
 )
 
 INSTALLED_APPS = (
@@ -175,9 +200,11 @@ INSTALLED_APPS = (
     'mediagenerator',
     'sorl.thumbnail',
 
+    #if $DEVELOPMENT
     'debug_toolbar',
     'django_extensions',
     'test_utils',
+    #end if
 )
 
 # A sample logging configuration. The only tangible logging
@@ -203,6 +230,7 @@ LOGGING = {
     }
 }
 
+#if $DEVELOPMENT
 INTERNAL_IPS = (
     '127.0.0.1',
 )
@@ -215,6 +243,7 @@ CACHE_BACKEND = "dummy://"
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
 }
+#end if
 
-DEFAULT_FROM_EMAIL = 'sirex@sirex-thinkpad'
-JQUERY_VERSION = '1.7'
+DEFAULT_FROM_EMAIL = '$SERVER_ADMIN'
+JQUERY_VERSION = '$JQUERY_VERSION'

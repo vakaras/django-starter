@@ -11,11 +11,13 @@ project/urls.py
 .sass-cache
 .waf*
 bin
-buildout.cfg
 c4che
 config.log
 docs/build
 env
-initial_data.json
 parts
 var
+
+syntax:regex
+^buildout.cfg$
+^initial_data.json$

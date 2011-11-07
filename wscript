@@ -4,6 +4,7 @@
 import codecs
 import functools
 import os
+import random
 import re
 import shutil
 import socket
@@ -48,6 +49,14 @@ def options(ctx):
     gr.add_option('--use-jquery', action='store', default='1.7',
                   help='jQuery version, or empty if you don\'t want to use it')
 
+    gr.add_option('--secret-key', action='store',
+                  help='set this to a random string -- the longer, the better')
+
+
+def _get_secret_key(length=50):
+    chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+    return ''.join([random.choice(chars) for i in range(length)])
+
 
 def configure(ctx):
     ctx.find_program('buildout', mandatory=False)
@@ -73,6 +82,7 @@ def configure(ctx):
     ctx.env.SERVER_ADMIN = ctx.options.server_admin
     ctx.env.SERVER_NAME = ctx.options.server_name
     ctx.env.JQUERY_VERSION = ctx.options.use_jquery
+    ctx.env.SECRET_KEY = ctx.options.secret_key or _get_secret_key()
 
     ctx.env.WSGI_USER = ctx.options.wsgi_user
     ctx.env.WSGI_GROUP = ctx.options.wsgi_group

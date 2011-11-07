@@ -144,7 +144,7 @@ SASS_FRAMEWORKS = (
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '8m86q=ycpwma&n1f0t-l)y(i&lx*aon=%!(uuv985a-t+a_bfw'
+SECRET_KEY = '$SECRET_KEY'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (

@@ -53,6 +53,14 @@ def options(ctx):
                   help='set this to a random string -- the longer, the better')
 
 
+    gr = ctx.add_option_group('setup options')
+    gr.add_option("--use-pkg-add", action="store_true", dest="use_pkg_add",
+                  default=False, help="use pkg_add in BSD systems")
+
+    gr.add_option("--debug", action="store_true", dest="debug", default=False,
+                  help="print commands, but do net execute")
+
+
 def _get_secret_key(length=50):
     chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
     return ''.join([random.choice(chars) for i in range(length)])
@@ -212,9 +220,12 @@ def _get_platform():
     return (uname, '', '')
 
 
-def _sh(cmd):
+def _sh(cmd, debug=False):
     print(cmd)
-    return subprocess.call(cmd, shell=True)
+    if debug:
+        return 0
+    else:
+        return subprocess.call(cmd, shell=True)
 
 
 class PackageSet(set):
@@ -234,7 +245,9 @@ class PackageSet(set):
 
 
 def setup(ctx):
-    """Install all required dependencies."""
+    """install all required dependencies"""
+
+    sh = functools.partial(_sh, debug=ctx.options.debug)
 
     if not os.geteuid()==0:
         sys.exit("Only root can run this script.")
@@ -268,11 +281,13 @@ def setup(ctx):
         'libjpeg62-dev',
         'libxslt1-dev',
     ])
+    name = ''
+    uname = 'freebsd'
 
 
     if name == 'ubuntu' or name == 'debian':
         packages.replace('git', 'git-core')
-        _sh('apt-get install %s' % ' '.join(packages))
+        sh('apt-get install %s' % ' '.join(packages))
 
     elif name == 'fedora':
         packages.remove('build-essential')
@@ -282,8 +297,8 @@ def setup(ctx):
                 ('libxslt1-dev', 'libxslt-devel')
             )
         packages.replace_all('-dev$', '-devel')
-        _sh('yum groupinstall "Development Tools"')
-        _sh('yum install %s' % ' '.join(packages))
+        sh('yum groupinstall "Development Tools"')
+        sh('yum install %s' % ' '.join(packages))
 
     elif uname == 'darwin':
         packages.remove('build-essential')
@@ -296,7 +311,18 @@ def setup(ctx):
                 ('libjpeg62-dev', 'jpeg'),
                 ('libxslt1-dev', 'libxslt')
         )
-        _sh('port -v install %s' % ' '.join(packages))
+        sh('port -v install %s' % ' '.join(packages))
+
+    elif uname == 'freebsd':
+        if ctx.options.use_pkg_add:
+            sh('pkg_add -r %s' % ' '.join(packages))
+        else:
+            for pkg in packages:
+                if sh('cd /usr/ports/%s && make install clean' % pkg) > 0:
+                    break
+
+
+
 
     else:
         sys.exit('Sorry, your platform is not supported...')

@@ -4,8 +4,11 @@
 import codecs
 import functools
 import os
+import re
 import shutil
 import socket
+import subprocess
+import sys
 
 from waflib import Context, Logs
 
@@ -181,6 +184,95 @@ def cleanpyc(ctx):
     Logs.info('cleaning: *.pyc')
     for pth in ctx.path.ant_glob('%s/**/*.pyc' % ctx.env.PROJECT_NAME):
         os.unlink(pth.abspath())
+
+
+def _get_platform():
+    import platform
+
+    python_version = sys.version[:3]
+    kernel = os.uname()[0].lower()
+    if kernel == 'linux':
+        if python_version > '2.6':
+            name, release = platform.linux_distribution()[:2]
+        else:
+            name, release = platform.linux_distribution()[:2]
+        if name and release:
+            return (name.lower(), release)
+    return ('', '')
+
+
+def _sh(cmd):
+    print(cmd)
+    return subprocess.call(cmd, shell=True)
+
+
+class PackageSet(set):
+    def replace(self, *args):
+        if not isinstance(args[0], tuple):
+            args = (args[0:2],)
+        for old, new in args:
+            self.remove(old)
+            self.add(new)
+
+    def replace_all(self, search, replace):
+        repl = re.compile(search)
+        for old in self:
+            new = repl.sub(replace, old)
+            if old != new:
+                self.replace(old, new)
+
+
+def setup(ctx):
+    """Install all required dependencies."""
+
+    if not os.geteuid()==0:
+        sys.exit("Only root can run this script.")
+
+    name, release = _get_platform()
+
+    packages = PackageSet([
+        # Build
+        'build-essential',
+
+        # Gettext
+        'gettext',
+
+        # VCS
+        'bzr',
+        'git',
+        'mercurial',
+        'subversion',
+
+        # Python
+        'python-dev',
+        'python-virtualenv',
+
+        # Ruby (used for gems)
+        'ruby',
+        'ruby-dev',
+
+        # Other development headers
+        'libfreetype6-dev',
+        'libicu-dev',
+        'libjpeg62-dev',
+        'libxslt1-dev',
+    ])
+
+
+    if name == 'ubuntu' or name == 'debian':
+        packages.replace('git', 'git-core')
+        _sh('apt-get install %s' % ' '.join(packages))
+
+    elif name == 'fedora':
+        packages.remove('build-essential')
+        packages.replace(
+                ('libfreetype6-dev', 'freetype-devel'),
+                ('libjpeg62-dev', 'libjpeg-turbo-devel'),
+                ('libxslt1-dev', 'libxslt-devel')
+            )
+        packages.replace_all('-dev$', '-devel')
+        _sh('yum groupinstall "Development Tools"')
+        _sh('yum install %s' % ' '.join(packages))
 
 
 

@@ -36,7 +36,7 @@ Creating new django projects based on django-starter is easy::
    hg clone https://bitbucket.org/sirex/django-starter my-new-project
    cd my-new-project
    ./clean.sh
-   make setup-ubuntu
+   sudo ./waf setup
    make run
 
 ... thats all, now you can start to work on your new project without thinking

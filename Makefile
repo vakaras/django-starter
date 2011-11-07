@@ -28,19 +28,3 @@ clean:
 .PHONY: tags
 tags:
 	bin/ctags -v
-
-.PHONY: setup-ubuntu
-setup-ubuntu:
-	sudo apt-get install \
-	    build-essential \
-	    python-virtualenv \
-	    python-dev \
-	    libicu-dev \
-	    libxslt1-dev \
-	    libfreetype6-dev \
-	    libjpeg62-dev \
-	    ruby \
-	    ruby-dev \
-	    gettext \
-	    mercurial \
-	    git

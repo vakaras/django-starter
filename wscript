@@ -133,9 +133,10 @@ def build(ctx):
     bld(rule='bin/buildout -N', name='buildout', target='bin/django',
         source='bin/buildout buildout.cfg %s/settings.py' % p)
 
-    bld(rule='bin/django syncdb --all --noinput && bin/django migrate --fake',
-        source='bin/django %s/settings.py initial_data.json' % p,
-        target='var/development.db')
+    bld(rule=('bin/django syncdb --all --noinput && '
+              'bin/django migrate --fake && '
+              'touch ${TGT}'),
+        after='buildout', target='var/db')
 
     bld(rule='bin/django importsassframeworks',
         target='var/sass-frameworks/_compass.scss',

@@ -47,7 +47,7 @@ DATABASES = {
     'default': {
         #if $USE_SQLITE or $DEVELOPMENT
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BUILDOUT_DIR, 'var', 'development.db'),
+        'NAME': os.path.join(BUILDOUT_DIR, 'var', 'db'),
         #else
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {

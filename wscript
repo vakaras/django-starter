@@ -273,9 +273,19 @@ def setup(ctx):
         packages.replace_all('-dev$', '-devel')
         _sh('yum groupinstall "Development Tools"')
         _sh('yum install %s' % ' '.join(packages))
-
-
-
+    
+    elif name == 'darwin':
+        packages.remove('build-essential', 'python-dev')
+        packages.replace(
+                ('git', 'git-core')
+                ('python-virtualenv', 'py-virtualenv')
+                ('libfreetype6-dev', 'freetype')
+                ('libicu-dev', 'icu')
+                ('libjpeg62-dev', 'jpeg')
+                ('libxslt1-dev', 'libxslt')
+        )
+        _sh('port -v install %s' % ' '.join(packages))
+        
 # --------
 # Hack to pass ``BuildContext`` to commands other than ``build``.
 from waflib.Build import BuildContext

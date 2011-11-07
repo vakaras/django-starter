@@ -201,20 +201,20 @@ def _get_platform():
     import platform
 
     python_version = sys.version[:3]
-    kernel = os.uname()[0].lower()
-    if kernel == 'linux':
+    uname = os.uname()[0].lower()
+    if uname == 'linux':
         if python_version > '2.6':
             name, release = platform.linux_distribution()[:2]
         else:
             name, release = platform.linux_distribution()[:2]
         if name and release:
-            return (name.lower(), release)
-    return ('', '')
+            return (uname, name.lower(), release)
+    return (uname, '', '')
 
 
 def _sh(cmd):
     print(cmd)
-    return subprocess.call(cmd, shell=True)
+    #return subprocess.call(cmd, shell=True)
 
 
 class PackageSet(set):
@@ -239,7 +239,7 @@ def setup(ctx):
     if not os.geteuid()==0:
         sys.exit("Only root can run this script.")
 
-    name, release = _get_platform()
+    uname, name, release = _get_platform()
 
     packages = PackageSet([
         # Build
@@ -285,10 +285,21 @@ def setup(ctx):
         _sh('yum groupinstall "Development Tools"')
         _sh('yum install %s' % ' '.join(packages))
 
+    elif uname == 'darwin':
+        packages.remove('build-essential')
+        packages.remove('python-dev')
+        packages.replace(
+                ('git', 'git-core'),
+                ('python-virtualenv', 'py-virtualenv'),
+                ('libfreetype6-dev', 'freetype'),
+                ('libicu-dev', 'icu'),
+                ('libjpeg62-dev', 'jpeg'),
+                ('libxslt1-dev', 'libxslt')
+        )
+        _sh('port -v install %s' % ' '.join(packages))
+
     else:
         sys.exit('Sorry, your platform is not supported...')
-
-
 
 # --------
 # Hack to pass ``BuildContext`` to commands other than ``build``.

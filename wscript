@@ -247,7 +247,7 @@ def setup(ctx):
         'python-dev',
         'python-virtualenv',
 
-        # Ruby (used for gems)
+        # Ruby (used for installing sass and compass gems)
         'ruby',
         'ruby-dev',
 
@@ -273,6 +273,9 @@ def setup(ctx):
         packages.replace_all('-dev$', '-devel')
         _sh('yum groupinstall "Development Tools"')
         _sh('yum install %s' % ' '.join(packages))
+
+    else:
+        sys.exit('Sorry, your platform is not supported...')
 
 
 

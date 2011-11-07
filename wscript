@@ -214,7 +214,7 @@ def _get_platform():
 
 def _sh(cmd):
     print(cmd)
-    #return subprocess.call(cmd, shell=True)
+    return subprocess.call(cmd, shell=True)
 
 
 class PackageSet(set):

@@ -21,3 +21,4 @@ var
 syntax:regexp
 ^buildout.cfg$
 ^initial_data.json$
+^configure$

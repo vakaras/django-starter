@@ -58,6 +58,32 @@ def _get_secret_key(length=50):
     return ''.join([random.choice(chars) for i in range(length)])
 
 
+def _create_configure_file(ctx):
+    """Store all configuration options to 'configure' file.
+
+    Next time, if you want to to modify some configuration options, you simple
+    can change configure file and and execute it using this command::
+
+        ./configure
+
+    """
+    import pipes
+
+    configure = sys.argv[2:]
+    if not ctx.options.secret_key:
+        configure.append("--secret-key=%s" % ctx.env.SECRET_KEY)
+
+    configure = (['%s' % ' '.join(sys.argv[:2])] +
+                 [pipes.quote(c) for c in configure])
+
+    f = open('configure', 'w')
+    f.write('#!/bin/sh\n')
+    f.write(' \\\n    '.join(configure) + '\n')
+    f.close()
+
+    os.chmod('configure', 0700)
+
+
 def configure(ctx):
     ctx.find_program('buildout', mandatory=False)
     ctx.find_program('hg')
@@ -91,6 +117,9 @@ def configure(ctx):
         ctx.env.DEVELOPMENT = False
     else:
         ctx.env.DEVELOPMENT = True
+
+    if not os.path.exists('configure'):
+        _create_configure_file(ctx)
 
 
 def _subst(task):

@@ -251,10 +251,22 @@ def _get_platform():
 
 def _sh(cmd, debug=False):
     print(cmd)
-    if debug:
-        return 0
+    if not debug:
+        rcode = subprocess.call(cmd, shell=True)
+        if rcode > 0:
+            sys.exit(rcode)
+
+
+def virtualenv(ctx):
+    """initialize virtualenv environment"""
+    uname, name, release = _get_platform()
+    sh = functools.partial(_sh, debug=ctx.options.debug)
+    if uname == 'darwin':
+        pyver = sys.version[:3]
+        sh('virtualenv-%s --no-site-packages env' % pyver)
     else:
-        return subprocess.call(cmd, shell=True)
+        sh('virtualenv --no-site-packages env')
+    sh('env/bin/pip install Cheetah Babel')
 
 
 class PackageSet(set):
@@ -278,7 +290,7 @@ def setup(ctx):
 
     sh = functools.partial(_sh, debug=ctx.options.debug)
 
-    if not os.geteuid()==0:
+    if not ctx.options.debug and not os.geteuid() == 0:
         sys.exit("Only root can run this script.")
 
     uname, name, release = _get_platform()
@@ -310,8 +322,6 @@ def setup(ctx):
         'libjpeg62-dev',
         'libxslt1-dev',
     ])
-    name = ''
-    uname = 'freebsd'
 
 
     if name == 'ubuntu' or name == 'debian':
@@ -330,11 +340,12 @@ def setup(ctx):
         sh('yum install %s' % ' '.join(packages))
 
     elif uname == 'darwin':
+        pyver = sys.version[:3].replace('.', '')
         packages.remove('build-essential')
         packages.remove('python-dev')
         packages.replace(
                 ('git', 'git-core'),
-                ('python-virtualenv', 'py-virtualenv'),
+                ('python-virtualenv', 'py%s-virtualenv' % pyver),
                 ('libfreetype6-dev', 'freetype'),
                 ('libicu-dev', 'icu'),
                 ('libjpeg62-dev', 'jpeg'),
@@ -347,8 +358,7 @@ def setup(ctx):
             sh('pkg_add -r %s' % ' '.join(packages))
         else:
             for pkg in packages:
-                if sh('cd /usr/ports/%s && make install clean' % pkg) > 0:
-                    break
+                sh('cd /usr/ports/%s && make install clean' % pkg)
 
 
 

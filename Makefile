@@ -15,8 +15,7 @@ c4che:
 	./waf configure --project-name=$(PROJECT)
 
 env:
-	virtualenv --no-site-packages env
-	env/bin/pip install Cheetah Babel
+	./waf virtualenv
 
 
 # Helpers

@@ -341,8 +341,9 @@ def setup(ctx):
 
     elif uname == 'darwin':
         pyver = sys.version[:3].replace('.', '')
-        packages.remove('build-essential')
+ 	packages.remove('build-essential')
         packages.remove('python-dev')
+        packages.remove('ruby-dev')
         packages.replace(
                 ('git', 'git-core'),
                 ('python-virtualenv', 'py%s-virtualenv' % pyver),
@@ -351,7 +352,9 @@ def setup(ctx):
                 ('libjpeg62-dev', 'jpeg'),
                 ('libxslt1-dev', 'libxslt')
         )
+        sh('port select --set python python%s' % pyver)
         sh('port -v install %s' % ' '.join(packages))
+        sh('ln -s /opt/local/bin/virtualenv-%s /opt/local/bin/virtualenv' % pyver)
 
     elif uname == 'freebsd':
         if ctx.options.use_pkg_add:

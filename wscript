@@ -341,7 +341,7 @@ def setup(ctx):
 
     elif uname == 'darwin':
         pyver = sys.version[:3].replace('.', '')
- 	packages.remove('build-essential')
+        packages.remove('build-essential')
         packages.remove('python-dev')
         packages.remove('ruby-dev')
         packages.replace(

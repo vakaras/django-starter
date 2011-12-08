@@ -25,5 +25,5 @@ clean:
 	./waf distclean
 
 .PHONY: tags
-tags:
+tags: all
 	bin/ctags -v

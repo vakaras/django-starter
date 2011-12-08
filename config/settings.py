@@ -104,15 +104,24 @@ MEDIA_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'www', 'media')
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '/media/'
 
-DEV_MEDIA_URL = '/static/'
+STATIC_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'www', 'static')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_DIR, 'static'),
+    os.path.join(BUILDOUT_DIR, 'var', 'mediagenerator'),
+)
+
+DEV_MEDIA_URL = '/mediagenerator/'
 PRODUCTION_MEDIA_URL = '/static/'
 
 GENERATED_MEDIA_DIR = os.path.join(BUILDOUT_DIR, 'var', 'www', 'static')
 IMPORTED_SASS_FRAMEWORKS_DIR = os.path.join(BUILDOUT_DIR, 'var',
                                             'sass-frameworks')
 
+MEDIAGENERATOR_DIR = os.path.join(PROJECT_DIR, 'mediagenerator')
+
 GLOBAL_MEDIA_DIRS = (
-    os.path.join(PROJECT_DIR, 'static'),
+    MEDIAGENERATOR_DIR,
     os.path.join(BUILDOUT_DIR, 'parts', 'modernizr'),
     #if $JQUERY_VERSION
     os.path.join(BUILDOUT_DIR, 'parts', 'jquery'),
@@ -183,6 +192,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
+    'django.core.context_processors.static',
     'django.core.context_processors.request',
     '${PROJECT_NAME}.context_processors.settings_for_context',
 )
@@ -194,6 +204,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.markup',
     'south',
@@ -245,5 +256,7 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 #end if
 
-DEFAULT_FROM_EMAIL = '$SERVER_ADMIN'
 JQUERY_VERSION = '$JQUERY_VERSION'
+
+PROTOCOL = 'http'
+DEFAULT_FROM_EMAIL = '$SERVER_ADMIN'

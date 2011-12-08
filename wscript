@@ -7,7 +7,6 @@ import os
 import random
 import re
 import shutil
-import socket
 import subprocess
 import sys
 
@@ -30,8 +29,7 @@ def options(ctx):
                   default='127.0.0.1:8000',
                   help='server domain name, example: www.example.com')
 
-    gr.add_option('--server-admin', action='store', default='%s@%s' % (
-                        os.getlogin(), socket.gethostname()),
+    gr.add_option('--server-admin', action='store', default='admin@example.com',
                   help='server admin email address')
 
     gr.add_option('--use-sqlite', action='store_true',
@@ -190,7 +188,7 @@ def build(ctx):
         after='buildout')
 
     bld(rule='bin/django generatemedia',
-        source=(glob('%s/static/**/*' % p) +
+        source=(glob('%s/mediagenerator/**/*' % p) +
                 ['var/sass-frameworks/_compass.scss']),
         after='buildout')
 

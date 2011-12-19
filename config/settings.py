@@ -106,15 +106,18 @@ MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'www', 'static')
 STATIC_URL = '/static/'
+MEDIAGENERATOR_DIR = os.path.join(BUILDOUT_DIR, 'var', 'mediagenerator')
 STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, 'static'),
-    os.path.join(BUILDOUT_DIR, 'var', 'mediagenerator'),
+    MEDIAGENERATOR_DIR,
 )
 
 DEV_MEDIA_URL = '/mediagenerator/'
 PRODUCTION_MEDIA_URL = '/static/'
 
 GENERATED_MEDIA_DIR = os.path.join(BUILDOUT_DIR, 'var', 'www', 'static')
+GENERATED_MEDIA_NAMES_FILE = os.path.join(MEDIAGENERATOR_DIR,
+                                          '_generated_media_names.py')
 IMPORTED_SASS_FRAMEWORKS_DIR = os.path.join(BUILDOUT_DIR, 'var',
                                             'sass-frameworks')
 

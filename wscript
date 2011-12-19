@@ -189,7 +189,11 @@ def build(ctx):
     bld(rule='bin/django generatemedia',
         source=(glob('%s/mediagenerator/**/*' % p) +
                 ['var/sass-frameworks/_compass.scss']),
-        after='buildout')
+        name='generatemedia', after='buildout')
+
+    bld(rule='bin/django collectstatic --noinput',
+        source=(glob('%s/static/**/*' % p)),
+        after='generatemedia')
 
     for lang in ctx.env.LANGUAGES:
         s = (p, lang)

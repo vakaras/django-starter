@@ -99,7 +99,6 @@ def configure(ctx):
     ctx.load('compiler_c python ruby')
 
     ctx.check_python_version((2,6))
-    ctx.check_python_module('PIL')
     ctx.check_python_headers()
 
     ctx.check_ruby_version((1,8,0))

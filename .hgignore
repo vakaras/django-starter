@@ -24,6 +24,7 @@ syntax:regexp
 ^docs/build$
 ^downloads$
 ^eggs$
+^develop-eggs$
 ^env$
 ^initial_data.json$
 ^parts$

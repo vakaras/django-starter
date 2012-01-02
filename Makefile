@@ -27,3 +27,7 @@ clean:
 .PHONY: tags
 tags: all
 	bin/ctags -v
+
+.PHONY: todo
+todo:
+	@egrep -nirI 'FIXME|TODO|XXX' $(PROJECT) config wscript

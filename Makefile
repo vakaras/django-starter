@@ -9,7 +9,7 @@ all: c4che env
 
 .PHONY: run
 run: all
-	bin/django runserver
+	bin/django runserver_plus
 
 c4che:
 	./waf configure --project-name=$(PROJECT)

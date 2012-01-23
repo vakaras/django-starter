@@ -17,9 +17,10 @@ out = '.'
 
 def options(ctx):
     ctx.load('compiler_c python ruby')
+    PROJECT_NAME = 'project'
 
     gr = ctx.get_option_group('configure options')
-    gr.add_option('--project-name', action='store', default='project',
+    gr.add_option('--project-name', action='store', default=PROJECT_NAME,
                   help='project name')
 
     gr.add_option('--production', action='store_true', default=False,
@@ -41,6 +42,9 @@ def options(ctx):
     gr.add_option('--wsgi-group', action='store',
                   help='the primary group that the daemon processes should be run as')
 
+    gr.add_option('--use-htpasswd', action='store_true', default=False,
+                  help='use http authenticaiton')
+
     gr.add_option('--languages', action='store', default='en',
                   help='comma separated list of two letter languages codes')
 
@@ -50,12 +54,20 @@ def options(ctx):
     gr.add_option('--secret-key', action='store',
                   help='set this to a random string -- the longer, the better')
 
+    gr.add_option('--mysql-username', action='store', default='root',
+                  help='MySQL database user name.')
+
+    gr.add_option('--mysql-password', action='store', default='',
+                  help='MySQL database user password.')
+
+    gr.add_option('--mysql-dbname', action='store', default=PROJECT_NAME,
+                  help='MySQL database name.')
 
     gr = ctx.add_option_group('setup options')
     gr.add_option("--use-pkg-add", action="store_true", dest="use_pkg_add",
                   default=False, help="use pkg_add in BSD systems")
 
-    gr.add_option("--debug", action="store_true", dest="debug", default=False,
+    gr.add_option("--dry-run", action="store_true", dest="dry_run", default=False,
                   help="print commands, but do net execute")
 
 
@@ -117,6 +129,11 @@ def configure(ctx):
 
     ctx.env.WSGI_USER = ctx.options.wsgi_user
     ctx.env.WSGI_GROUP = ctx.options.wsgi_group
+    ctx.env.USE_HTPASSWD = ctx.options.use_htpasswd
+
+    ctx.env.MYSQL_USERNAME = ctx.options.mysql_username
+    ctx.env.MYSQL_PASSWORD = ctx.options.mysql_password
+    ctx.env.MYSQL_DBNAME = ctx.options.mysql_dbname
 
     if ctx.env.PRODUCTION:
         ctx.env.DEVELOPMENT = False
@@ -159,6 +176,9 @@ def build(ctx):
         bld(rule=_subst, source='config/apache.conf c4che/_cache.py',
             target='var/etc/apache.conf')
 
+        bld(rule=_subst, source='config/my.cnf',
+            target='var/etc/my.cnf')
+
     bld(rule=_subst, source='config/buildout.cfg c4che/_cache.py',
         target='buildout.cfg')
 
@@ -191,19 +211,26 @@ def build(ctx):
                 ['var/sass-frameworks/_compass.scss']),
         name='generatemedia', after='buildout')
 
-    bld(rule='bin/django collectstatic --noinput',
+    bld(rule='bin/django collectstatic --noinput --verbosity=0',
         source=(glob('%s/static/**/*' % p)),
         after='generatemedia')
 
     for lang in ctx.env.LANGUAGES:
         s = (p, lang)
-        if os.path.exists('%s/locale/%s'):
+        if os.path.exists('%s/locale/%s' % s):
+
             bld(rule='cd %s ; ../bin/django compilemessages -l %s' % s,
                 source='%s/locale/%s/LC_MESSAGES/django.po' % s,
                 target='%s/locale/%s/LC_MESSAGES/django.mo' % s,
                 after='django')
 
 
+def makemessages(ctx):
+    for lang in ctx.env.LANGUAGES:
+        s = (ctx.env.PROJECT_NAME, lang)
+        if os.path.exists('%s/locale/%s' % s):
+            _sh('cd %s ; ../bin/django makemessages -l %s '
+                '-e html,txt' % s)
 
 
 def distclean(ctx):
@@ -250,9 +277,9 @@ def _get_platform():
     return (uname, '', '')
 
 
-def _sh(cmd, debug=False):
+def _sh(cmd, dry_run=False):
     print(cmd)
-    if not debug:
+    if not dry_run:
         rcode = subprocess.call(cmd, shell=True)
         if rcode > 0:
             sys.exit(rcode)
@@ -261,7 +288,7 @@ def _sh(cmd, debug=False):
 def virtualenv(ctx):
     """initialize virtualenv environment"""
     uname, name, release = _get_platform()
-    sh = functools.partial(_sh, debug=ctx.options.debug)
+    sh = functools.partial(_sh, dry_run=ctx.options.dry_run)
     if uname == 'darwin':
         pyver = sys.version[:3]
         sh('virtualenv-%s --no-site-packages env' % pyver)
@@ -289,9 +316,9 @@ class PackageSet(set):
 def setup(ctx):
     """install all required dependencies"""
 
-    sh = functools.partial(_sh, debug=ctx.options.debug)
+    sh = functools.partial(_sh, dry_run=ctx.options.dry_run)
 
-    if not ctx.options.debug and not os.geteuid() == 0:
+    if not ctx.options.dry_run and not os.geteuid() == 0:
         sys.exit("Only root can run this script.")
 
     uname, name, release = _get_platform()
@@ -376,5 +403,5 @@ from waflib.Build import BuildContext
 def use_build_context_for(*cmds):
     for cmd in cmds:
         type('BldCtx_' + cmd, (BuildContext,), {'cmd': cmd, 'fun': cmd})
-use_build_context_for('distclean', 'cleanpyc')
+use_build_context_for('makemessages', 'distclean', 'cleanpyc')
 # --------

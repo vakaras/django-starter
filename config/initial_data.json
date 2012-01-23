@@ -6,7 +6,9 @@
             "domain": "$SERVER_NAME", 
             "name": "$SERVER_NAME"
         }
-    }, 
+    }#slurp
+    #if $DEVELOPMENT
+, 
     {
         "pk": 1, 
         "model": "auth.user", 
@@ -24,5 +26,7 @@
             "email": "$SERVER_ADMIN", 
             "date_joined": "2010-11-06 16:07:59"
         }
-    }
+    }#slurp
+    #end if
+
 ]

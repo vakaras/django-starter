@@ -153,7 +153,7 @@ SASS_FRAMEWORKS = (
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
-ADMIN_MEDIA_PREFIX = '/static/admin/'
+ADMIN_MEDIA_PREFIX = STATIC_URL + "admin/"
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '$SECRET_KEY'
@@ -166,9 +166,6 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    #if $DEVELOPMENT
-    'mediagenerator.middleware.MediaMiddleware',
-    #end if
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -180,6 +177,10 @@ MIDDLEWARE_CLASSES = (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     #end if
 )
+
+if MEDIA_DEV_MODE:
+    MIDDLEWARE_CLASSES = (('mediagenerator.middleware.MediaMiddleware',) +
+                          MIDDLEWARE_CLASSES)
 
 ROOT_URLCONF = '${PROJECT_NAME}.urls'
 
@@ -252,7 +253,11 @@ INTERNAL_IPS = (
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BUILDOUT_DIR, 'var', 'mail')
 
-CACHE_BACKEND = "dummy://"
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
 
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,

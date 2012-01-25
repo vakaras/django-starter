@@ -41,3 +41,12 @@ Creating new django projects based on django-starter is easy::
 
 ... thats all, now you can start to work on your new project without
 thinking about various project infrastructure related things.
+
+Adding app
+==========
+
+To create new app, type::
+
+    bin/django startapp myapp
+
+Then add ``myapp`` to apps list in ``ect/settings.py`` and run ``make``.

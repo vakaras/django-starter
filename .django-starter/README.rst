@@ -1,12 +1,13 @@
 ``django-starter`` is a django project template, that includes all best
-practices for configuring, developing, deploying and maintaining you project.
+practices for configuring, developing, deploying and maintaining you
+project.
 
 Features:
 
 * Powerful build tools: waf, zc.buildout, make.
 
-* Powerful development tools: South, django-debug-toolbar, django-extensions,
-  django-test-utils, ipdb, ipython, ctags.
+* Powerful development tools: South, django-debug-toolbar, django-
+  extensions, django-test-utils, ipdb, ipython, ctags.
 
 * Mainstream web development libraries: jQuery, Modernizr, SASS with Compass
   support, django-mediagenerator, solr-thumbnails.
@@ -29,12 +30,14 @@ Quick start
 
 Creating new django projects based on django-starter is easy::
 
-   sudo apt-get install mercurial
-   hg clone https://bitbucket.org/sirex/django-starter my-new-project
-   cd my-new-project
-   ./clean.sh
-   sudo ./waf setup
-   make run
+    sudo apt-get install git
+    git clone git://github.com/vakaras/django-starter.git my-new-project
+    cd my-new-project
+    git remote rename origin template
+    git remote add origin my-new-project-git-repository
+    git push -u origin master
+    sudo ./waf setup
+    make run
 
-... thats all, now you can start to work on your new project without thinking
-about various project infrastructure related things.
+... thats all, now you can start to work on your new project without
+thinking about various project infrastructure related things.

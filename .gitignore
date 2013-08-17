@@ -17,6 +17,8 @@ project/urls.py
 
 bin
 buildout.cfg
+bootstrap.py
+.virtualenv
 c4che
 configure
 docs/build

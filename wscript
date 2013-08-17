@@ -291,9 +291,9 @@ def virtualenv(ctx):
     sh = functools.partial(_sh, dry_run=ctx.options.dry_run)
     if uname == 'darwin':
         pyver = sys.version[:3]
-        sh('virtualenv-%s --no-site-packages env' % pyver)
+        sh('virtualenv-%s --setuptools env' % pyver)
     else:
-        sh('virtualenv --no-site-packages env')
+        sh('python .virtualenv/source/virtualenv.py env')
     sh('env/bin/pip install Cheetah Babel')
 
 

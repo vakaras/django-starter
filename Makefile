@@ -6,7 +6,7 @@ COVERAGE_INCLUDES = --include=project/*
 
 
 .PHONY: all
-all: c4che env
+all: c4che env bootstrap.py
 	env/bin/python waf
 
 .PHONY: run
@@ -16,9 +16,16 @@ run: all
 c4che:
 	./waf configure --project-name=$(PROJECT)
 
-env:
-	./waf virtualenv
+.virtualenv:
+	mkdir -p .virtualenv
+	wget -c \
+		https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.10.tar.gz \
+		-O .virtualenv/archive.tar.gz
+	tar -xvf .virtualenv/archive.tar.gz
+	mv virtualenv-* .virtualenv/source
 
+env: .virtualenv
+	./waf virtualenv
 
 # Helpers
 

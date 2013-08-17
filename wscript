@@ -191,7 +191,7 @@ def build(ctx):
     bld(rule=_subst, source='config/initial_data.json c4che/_cache.py',
         target='initial_data.json')
 
-    bld(rule='${PYTHON} bootstrap.py --distribute', target='bin/buildout',
+    bld(rule='env/bin/python bootstrap.py ', target='bin/buildout',
         source='buildout.cfg')
 
     bld(rule='bin/buildout -N', name='buildout', target='bin/django',

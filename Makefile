@@ -53,3 +53,6 @@ graph: all
 	    --all-applications \
 	    -o var/graph.png
 	xdg-open var/graph.png
+
+bootstrap.py:
+	wget http://downloads.buildout.org/2/bootstrap.py
